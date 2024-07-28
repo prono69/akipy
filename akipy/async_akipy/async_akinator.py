@@ -25,6 +25,7 @@ SOFTWARE.
 import json
 import re
 import asyncio
+import logging
 
 try:
     import httpx
@@ -35,7 +36,7 @@ from ..dicts import HEADERS, THEME_ID, THEMES, LANG_MAP
 from ..exceptions import InvalidLanguageError, CantGoBackAnyFurther
 from ..utils import get_answer_id, async_request_handler
 
-from pyUltroid import LOGS
+akipyLOGS = logging.getLogger("Aᴋɪɴᴀᴛᴏʀ")
 
 class Akinator:
     """
@@ -164,14 +165,14 @@ class Akinator:
             req = await async_request_handler(url=url, method='POST', data=data)
             req.raise_for_status()
             resp = req.json()
-            LOGS.info(f"API Response: {resp}")
+            #akipyLOGS.info(f"API Response: {resp}")
 
             if "id_proposition" in resp:
                 await self.__update(action="win", resp=resp)
             else:
                 await self.__update(action="answer", resp=resp)
 
-            LOGS.info(f"Updated question: {self.question}")
+            akipyLOGS.info(f"Updated question: {self.question}")
             self.completion = resp.get('completion')
         except httpx.HTTPStatusError as e:
             raise httpx.HTTPStatusError(f"HTTP error occurred: {e}") from e
